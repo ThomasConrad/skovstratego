@@ -30,18 +30,18 @@
     heading-font: "Diogenes",
     border-image: "greek-border.png",
     units: (
-      "0": (name: "LABARUM", flavor: "Sacred Eagle Standard", count: 1),
-      "1": (name: "GREEK FIRE", flavor: "Burning Oil Trap", count: 9),
-      "2": (name: "KRYPTEIA", flavor: "Spartan Secret Agent", count: 1),
-      "3": (name: "GYMNETES", flavor: "Light Skirmisher", count: 14),
-      "4": (name: "SAPPER", flavor: "Wall Underminer", count: 6),
-      "5": (name: "DEKADARCH", flavor: "Squad Leader", count: 6),
-      "6": (name: "LOCHAGOS", flavor: "Company Captain", count: 6),
-      "7": (name: "TAXIARCH", flavor: "Regiment Commander", count: 6),
-      "8": (name: "CHILIARCH", flavor: "Battalion Leader", count: 5),
-      "9": (name: "POLEMARCH", flavor: "War General", count: 3),
-      "10": (name: "STRATEGOS", flavor: "Supreme General", count: 2),
-      "11": (name: "BASILEUS", flavor: "Divine King", count: 1),
+      "0": (name: "GOLDEN FLEECE", flavor: "Sacred Treasure", count: 1),
+      "1": (name: "SIREN'S SONG", flavor: "Deadly Trap", count: 9),
+      "2": (name: "ODYSSEUS", flavor: "Master of Disguise", count: 1),
+      "3": (name: "MESSENGER", flavor: "Swift Scout", count: 14),
+      "4": (name: "CYCLOPS", flavor: "Stone Crusher", count: 6),
+      "5": (name: "SAILOR", flavor: "Crew Member", count: 6),
+      "6": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
+      "7": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
+      "8": (name: "HERO", flavor: "Legendary Warrior", count: 5),
+      "9": (name: "KING", flavor: "Island Ruler", count: 3),
+      "10": (name: "ADMIRAL", flavor: "Fleet Commander", count: 2),
+      "11": (name: "ZEUS", flavor: "King of Gods", count: 1),
     )
   ),
   // Trojan team configuration  
@@ -50,18 +50,18 @@
     heading-font: "Cinzel Decorative",
     border-image: "trojan-border.png",
     units: (
-      "0": (name: "PALLADIUM", flavor: "Sacred Athena Statue", count: 1),
-      "1": (name: "CALTROPS", flavor: "Spike Trap", count: 9),
-      "2": (name: "INFILTRATOR", flavor: "City Spy", count: 1),
-      "3": (name: "PELTAST", flavor: "Javelin Thrower", count: 14),
-      "4": (name: "ENGINEER", flavor: "Siege Breaker", count: 6),
-      "5": (name: "HOPLITE", flavor: "Shield Bearer", count: 6),
-      "6": (name: "PENTEKONTARCH", flavor: "Fifty-Leader", count: 6),
-      "7": (name: "HIPPARCHUS", flavor: "Cavalry Commander", count: 6),
-      "8": (name: "HERO", flavor: "Noble Champion", count: 5),
-      "9": (name: "ANAX", flavor: "Warrior Lord", count: 3),
-      "10": (name: "PRIAM", flavor: "Royal Prince", count: 2),
-      "11": (name: "DARDANUS", flavor: "Founder King", count: 1),
+      "0": (name: "PALLADIUM", flavor: "Sacred Statue", count: 1),
+      "1": (name: "SIREN'S SONG", flavor: "Deadly Trap", count: 9),
+      "2": (name: "HECTOR", flavor: "Defender of Troy", count: 1),
+      "3": (name: "MESSENGER", flavor: "Swift Scout", count: 14),
+      "4": (name: "CYCLOPS", flavor: "Stone Crusher", count: 6),
+      "5": (name: "SAILOR", flavor: "Crew Member", count: 6),
+      "6": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
+      "7": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
+      "8": (name: "HERO", flavor: "Legendary Warrior", count: 5),
+      "9": (name: "KING", flavor: "Island Ruler", count: 3),
+      "10": (name: "ADMIRAL", flavor: "Fleet Commander", count: 2),
+      "11": (name: "APOLLO", flavor: "God of Troy", count: 1),
     )
   )
 )
@@ -164,8 +164,8 @@
 }
 
 // Define single card creation function
-#let make-card(title, number, description, border-image: none, heading-font: "Diogenes") = {
-  let inner-padding = if border-image != none { 16mm } else { 4mm }
+#let make-card(title, number, description, border-image: none, heading-font: "Diogenes", x-offset: 0mm) = {
+  let inner-padding = if border-image != none { 20mm } else { 4mm }
   
   let card-content = rect(
     width: card-width,
@@ -173,7 +173,7 @@
     stroke: if border-image != none { none } else { 1pt + black },
     inset: 0pt,
     [
-      #v(15mm)
+      #v(8mm)
       // Title with enhanced styling
       #align(center)[
         #text(
@@ -200,9 +200,9 @@
       ]
       #v(2mm)
       // Description with better formatting
-      #pad(x: inner-padding)[
+      #pad(left: inner-padding + x-offset, right: inner-padding)[
         #set par(justify: true, leading: 0.6em)
-        #set text(size: 7.5pt, font: ("Dominican", "Times New Roman", "Georgia"))
+        #set text(size: 7pt, font: ("Dominican", "Times New Roman", "Georgia"))
         #description
       ]
       #v(1fr)
@@ -228,8 +228,8 @@
 }
 
 // Function to create n copies of a card
-#let make-cards(n, title, number, description, border-image: none, heading-font: "Diogenes") = {
-  range(n).map(_ => make-card(title, number, description, border-image: border-image, heading-font: heading-font))
+#let make-cards(n, title, number, description, border-image: none, heading-font: "Diogenes", x-offset: 0mm) = {
+  range(n).map(_ => make-card(title, number, description, border-image: border-image, heading-font: heading-font, x-offset: x-offset))
 }
 
 // Helper function to create pages with 8 cards each
@@ -286,17 +286,37 @@
     let unit = team-config.units.at(unit-val)
     let rules = unit-rules.at(unit-val)
     
+    // Don't add team prefix for unique legendary units
+    let card-title = if unit-val in ("0", "2", "11") {
+      unit.name
+    } else {
+      team-config.team-name + "\n" + unit.name
+    }
+    
+    // Handle dynamic special rules 
+    let special-rule = if unit-val == "11" {
+      // Gods are vulnerable to their own team's spy
+      "Vulnerable to " + capitalize(team-config.units.at("2").name) + "."
+    } else if unit-val == "2" {
+      // Spy can defeat the highest-ranking enemy
+      let opposite-team-key = get-opposite-team(team-key)
+      let opposite-config = unit-configs.at(opposite-team-key)
+      "Can defeat " + capitalize(opposite-config.units.at("11").name) + "."
+    } else {
+      rules.special
+    }
+    
     let unit-cards = make-cards(
       unit.count, 
-      team-config.team-name + "\n" + unit.name, 
+      card-title, 
       unit-val,
       [
         #set text(style: "italic")
         #fake-bold[#unit.flavor]
         
         #set text(style: "normal")
-        #if rules.special != none [
-          #fake-bold[Special Rules:] #rules.special
+        #if special-rule != none [
+          #fake-bold[Special Rules:] #special-rule
           
           #v(2mm)
         ]
@@ -306,7 +326,8 @@
         #fake-bold[Defeated by:] #format-defeats(rules.defeated-by, team-key)
       ],
       border-image: team-config.border-image,
-      heading-font: team-config.heading-font
+      heading-font: team-config.heading-font,
+      x-offset: -7mm
     )
     
     cards = cards + unit-cards
