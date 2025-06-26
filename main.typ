@@ -34,34 +34,34 @@
       "1": (name: "SIREN'S SONG", flavor: "Deadly Trap", count: 9),
       "2": (name: "ODYSSEUS", flavor: "Master of Disguise", count: 1),
       "3": (name: "MESSENGER", flavor: "Swift Scout", count: 14),
-      "4": (name: "CYCLOPS", flavor: "Stone Crusher", count: 6),
-      "5": (name: "SAILOR", flavor: "Crew Member", count: 6),
-      "6": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
-      "7": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
+      "4": (name: "SAILOR", flavor: "Crew Member", count: 6),
+      "5": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
+      "6": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
+      "7": (name: "ADMIRAL", flavor: "Fleet Commander", count: 6),
       "8": (name: "HERO", flavor: "Legendary Warrior", count: 5),
-      "9": (name: "KING", flavor: "Island Ruler", count: 3),
-      "10": (name: "ADMIRAL", flavor: "Fleet Commander", count: 2),
-      "11": (name: "ZEUS", flavor: "King of Gods", count: 1),
+      "9": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 3),
+      "10": (name: "DEMIGOD", flavor: "Bearer of Immortal Blood", count: 2),
+      "11": (name: "ATHENA", flavor: "Goddess of Wisdom", count: 1),
     )
   ),
   // Trojan team configuration  
   "TROJAN": (
     team-name: "TROJAN",
-    heading-font: "Cinzel Decorative",
+    heading-font: "Diogenes",
     border-image: "trojan-border.png",
     units: (
       "0": (name: "PALLADIUM", flavor: "Sacred Statue", count: 1),
       "1": (name: "SIREN'S SONG", flavor: "Deadly Trap", count: 9),
       "2": (name: "HECTOR", flavor: "Defender of Troy", count: 1),
       "3": (name: "MESSENGER", flavor: "Swift Scout", count: 14),
-      "4": (name: "CYCLOPS", flavor: "Stone Crusher", count: 6),
-      "5": (name: "SAILOR", flavor: "Crew Member", count: 6),
-      "6": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
-      "7": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
+      "4": (name: "SAILOR", flavor: "Crew Member", count: 6),
+      "5": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
+      "6": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
+      "7": (name: "ADMIRAL", flavor: "Fleet Commander", count: 6),
       "8": (name: "HERO", flavor: "Legendary Warrior", count: 5),
-      "9": (name: "KING", flavor: "Island Ruler", count: 3),
-      "10": (name: "ADMIRAL", flavor: "Fleet Commander", count: 2),
-      "11": (name: "APOLLO", flavor: "God of Troy", count: 1),
+      "9": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 3),
+      "10": (name: "DEMIGOD", flavor: "Bearer of Immortal Blood", count: 2),
+      "11": (name: "APOLLO", flavor: "God of Light", count: 1),
     )
   )
 )
@@ -71,7 +71,7 @@
   "0": (
     special: "Cannot attack. Capture enemy flag to win the game!",
     defeats: (),
-    defeated-by: ("1",) // Only bombs can attack flags, but flags are immune
+    defeated-by: ("11", "10", "9", "8", "7", "6", "5", "4", "3", "2") // Defeated by all except bomb
   ),
   "1": (
     special: "Cannot attack or move. Destroys attackers.",
@@ -80,12 +80,12 @@
   ),
   "2": (
     special: "Can defeat the highest-ranking enemy.",
-    defeats: ("0", "11"),
-    defeated-by: ("11", "10", "9", "8", "7", "6", "5", "4", "3", "1") // All other pieces
+    defeats: ("0", "11"), // Defeats flag and highest rank
+    defeated-by: ("10", "9", "8", "7", "6", "5", "4", "3", "1") // All pieces except highest rank
   ),
   "3": (
     special: none, // No special rules - just standard attacking
-    defeats: ("2", "0"),
+    defeats: ("2", "0"), // Defeats spy and flag
     defeated-by: ("11", "10", "9", "8", "7", "6", "5", "4", "1") // All military ranks, miner, bomb
   ),
   "4": (
@@ -174,19 +174,21 @@
     inset: 0pt,
     [
       #v(8mm)
-      // Title with enhanced styling
-      #align(center)[
-        #text(
-          size: 11pt, 
-          weight: "bold", 
-          font: (heading-font, "Times New Roman")
-        )[#title]
-      ]
-      #v(2mm)
-      // Number circle with enhanced styling
+      // Title with enhanced styling - fixed height container
+      #box(
+        height: 24pt,
+        width: 100%,
+        align(center + horizon)[
+          #text(
+            size: 11pt, 
+            weight: "bold", 
+            font: (heading-font, "Times New Roman")
+          )[#title]
+        ]
+      )
       #align(center)[
         #circle(
-          radius: 7mm,
+          radius: 6mm,
           stroke: 2pt + black,
           inset: 0pt,
           align(center + horizon)[
@@ -198,8 +200,6 @@
           ]
         )
       ]
-      #v(2mm)
-      // Description with better formatting
       #pad(left: inner-padding + x-offset, right: inner-padding)[
         #set par(justify: true, leading: 0.6em)
         #set text(size: 7pt, font: ("Dominican", "Times New Roman", "Georgia"))
@@ -295,8 +295,10 @@
     
     // Handle dynamic special rules 
     let special-rule = if unit-val == "11" {
-      // Gods are vulnerable to their own team's spy
-      "Vulnerable to " + capitalize(team-config.units.at("2").name) + "."
+      // Gods are vulnerable to the opposite team's spy
+      let opposite-team-key = get-opposite-team(team-key)
+      let opposite-config = unit-configs.at(opposite-team-key)
+      "Vulnerable to " + capitalize(opposite-config.units.at("2").name) + "."
     } else if unit-val == "2" {
       // Spy can defeat the highest-ranking enemy
       let opposite-team-key = get-opposite-team(team-key)
