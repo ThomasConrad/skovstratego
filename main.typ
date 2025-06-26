@@ -21,6 +21,148 @@
 
 // Enhanced styling and colors for classical theme
 
+// UNIT CONFIGURATION SYSTEM
+// Define unit properties and team-specific names
+#let unit-configs = (
+  // Greek team configuration
+  "GREEK": (
+    team-name: "GREEK",
+    heading-font: "Diogenes",
+    border-image: "greek-border.png",
+    units: (
+      "0": (name: "LABARUM", flavor: "Sacred Eagle Standard", count: 1),
+      "1": (name: "GREEK FIRE", flavor: "Burning Oil Trap", count: 9),
+      "2": (name: "KRYPTEIA", flavor: "Spartan Secret Agent", count: 1),
+      "3": (name: "GYMNETES", flavor: "Light Skirmisher", count: 14),
+      "4": (name: "SAPPER", flavor: "Wall Underminer", count: 6),
+      "5": (name: "DEKADARCH", flavor: "Squad Leader", count: 6),
+      "6": (name: "LOCHAGOS", flavor: "Company Captain", count: 6),
+      "7": (name: "TAXIARCH", flavor: "Regiment Commander", count: 6),
+      "8": (name: "CHILIARCH", flavor: "Battalion Leader", count: 5),
+      "9": (name: "POLEMARCH", flavor: "War General", count: 3),
+      "10": (name: "STRATEGOS", flavor: "Supreme General", count: 2),
+      "11": (name: "BASILEUS", flavor: "Divine King", count: 1),
+    )
+  ),
+  // Trojan team configuration  
+  "TROJAN": (
+    team-name: "TROJAN",
+    heading-font: "Cinzel Decorative",
+    border-image: "trojan-border.png",
+    units: (
+      "0": (name: "PALLADIUM", flavor: "Sacred Athena Statue", count: 1),
+      "1": (name: "CALTROPS", flavor: "Spike Trap", count: 9),
+      "2": (name: "INFILTRATOR", flavor: "City Spy", count: 1),
+      "3": (name: "PELTAST", flavor: "Javelin Thrower", count: 14),
+      "4": (name: "ENGINEER", flavor: "Siege Breaker", count: 6),
+      "5": (name: "HOPLITE", flavor: "Shield Bearer", count: 6),
+      "6": (name: "PENTEKONTARCH", flavor: "Fifty-Leader", count: 6),
+      "7": (name: "HIPPARCHUS", flavor: "Cavalry Commander", count: 6),
+      "8": (name: "HERO", flavor: "Noble Champion", count: 5),
+      "9": (name: "ANAX", flavor: "Warrior Lord", count: 3),
+      "10": (name: "PRIAM", flavor: "Royal Prince", count: 2),
+      "11": (name: "DARDANUS", flavor: "Founder King", count: 1),
+    )
+  )
+)
+
+// Unit special rules and combat data
+#let unit-rules = (
+  "0": (
+    special: "Cannot attack. Capture enemy flag to win the game!",
+    defeats: (),
+    defeated-by: ("1",) // Only bombs can attack flags, but flags are immune
+  ),
+  "1": (
+    special: "Cannot attack or move. Destroys attackers.",
+    defeats: ("11", "10", "9", "8", "7", "6", "5", "3", "2"), // All except miner and flag
+    defeated-by: ("4",) // Only miner
+  ),
+  "2": (
+    special: "Can defeat the highest-ranking enemy.",
+    defeats: ("0", "11"),
+    defeated-by: ("11", "10", "9", "8", "7", "6", "5", "4", "3", "1") // All other pieces
+  ),
+  "3": (
+    special: none, // No special rules - just standard attacking
+    defeats: ("2", "0"),
+    defeated-by: ("11", "10", "9", "8", "7", "6", "5", "4", "1") // All military ranks, miner, bomb
+  ),
+  "4": (
+    special: "Only piece that can defeat Bombs.",
+    defeats: ("3", "2", "1", "0"),
+    defeated-by: ("11", "10", "9", "8", "7", "6", "5") // All military ranks
+  ),
+  "5": (
+    special: none, // No special rules - just standard attacking
+    defeats: ("4", "3", "2", "0"),
+    defeated-by: ("11", "10", "9", "8", "7", "6", "1") // All higher military ranks, bomb
+  ),
+  "6": (
+    special: none, // No special rules - just standard attacking
+    defeats: ("5", "4", "3", "2", "0"),
+    defeated-by: ("11", "10", "9", "8", "7", "1") // Higher military ranks, bomb
+  ),
+  "7": (
+    special: none, // No special rules - just standard attacking
+    defeats: ("6", "5", "4", "3", "2", "0"),
+    defeated-by: ("11", "10", "9", "8", "1") // Senior officers, bomb
+  ),
+  "8": (
+    special: none, // No special rules - just standard attacking
+    defeats: ("7", "6", "5", "4", "3", "2", "0"),
+    defeated-by: ("11", "10", "9", "1") // Colonel, general, field marshal, bomb
+  ),
+  "9": (
+    special: none, // No special rules - just standard attacking
+    defeats: ("8", "7", "6", "5", "4", "3", "2", "0"),
+    defeated-by: ("11", "10", "1") // General, field marshal, bomb
+  ),
+  "10": (
+    special: none, // No special rules - just standard attacking
+    defeats: ("9", "8", "7", "6", "5", "4", "3", "2", "0"),
+    defeated-by: ("11", "2", "1") // Field marshal, spy, bomb
+  ),
+  "11": (
+    special: "Vulnerable to Spy.",
+    defeats: ("10", "9", "8", "7", "6", "5", "4", "3", "0"),
+    defeated-by: ("2", "1") // Spy, bomb
+  )
+)
+
+// Helper function to capitalize names (only first letter capital)
+#let capitalize(text) = {
+  if text.len() == 0 {
+    ""
+  } else {
+    upper(text.first()) + lower(text.slice(1))
+  }
+}
+
+// Helper function to get opposite team key
+#let get-opposite-team(team-key) = {
+  if team-key == "GREEK" {
+    "TROJAN"
+  } else {
+    "GREEK"
+  }
+}
+
+// Helper function to format defeat lists with opposite team's unit names
+#let format-defeats(defeats, current-team-key) = {
+  if defeats.len() == 0 {
+    "None"
+  } else {
+    let opposite-team-key = get-opposite-team(current-team-key)
+    let opposite-config = unit-configs.at(opposite-team-key)
+    
+    defeats.map(val => {
+      let unit = opposite-config.units.at(val)
+      capitalize(unit.name) + " (" + val + ")"
+    }).join(", ")
+  }
+}
+
 // Define single card creation function
 #let make-card(title, number, description, border-image: none, heading-font: "Diogenes") = {
   let inner-padding = if border-image != none { 16mm } else { 4mm }
@@ -134,246 +276,48 @@
 // Field Marshal (11): 1 card (unchanged - unique highest rank)
 // TOTAL: 60 cards
 
-// Function to generate all cards for a team
-#let make-team-cards(team-name, heading-font, border-image) = {
+// Function to generate all cards for a team using configuration
+#let make-team-cards(team-key) = {
+  let team-config = unit-configs.at(team-key)
+  let cards = ()
   
-  (
-    // Flag - 1 card
-    ..make-cards(1, team-name + " FLAG", "0",
-    [
-      #set text(style: "italic")
-      #fake-bold[The Sacred Standard]
-      
-      #set text(style: "normal")
-      The Flag represents your army's honor and cannot engage in combat.
-      
-      #v(2mm)
-      
-      #fake-bold[Special Rules:]
-      • Cannot challenge other pieces
-      • Immune to Bombs
-      • #fake-bold[Victory Condition:] Capture the enemy flag to win!
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-  
-    // Bomb - 9 cards
-    ..make-cards(9, team-name + " BOMB", "1",
-    [
-      #set text(style: "italic")
-      #fake-bold[Explosive Trap]
-      
-      #set text(style: "normal")
-      A hidden mine that destroys most attackers but cannot move to attack.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Field Marshal, General, Colonel, Major, Captain, Lieutenant, Sergeant, Scout, Spy
-      
-      #fake-bold[Defeated by:] Miner (only)
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Spy - 1 card
-    ..make-cards(1, team-name + " SPY", "2",
-    [
-      #set text(style: "italic")
-      #fake-bold[Shadow Agent]
-      
-      #set text(style: "normal")
-      A master of stealth who can eliminate the highest-ranking enemy through cunning.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Flag, Field Marshal
-      
-      #fake-bold[Defeated by:] All other pieces
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Scout - 14 cards
-    ..make-cards(14, team-name + " SCOUT", "3",
-    [
-      #set text(style: "italic")
-      #fake-bold[Swift Messenger]
-      
-      #set text(style: "normal")
-      Light infantry skilled in reconnaissance and rapid movement across the battlefield.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Spy, Flag
-      
-      #fake-bold[Defeated by:] All military ranks, Miner, Bomb
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Miner - 6 cards
-    ..make-cards(6, team-name + " MINER", "4",
-    [
-      #set text(style: "italic")
-      #fake-bold[Siege Engineer]
-      
-      #set text(style: "normal")
-      Specialized warrior trained to disarm explosives and breach fortifications.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Scout, Spy, #fake-bold[Bomb], Flag
-      
-      #fake-bold[Defeated by:] All military ranks
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Sergeant - 6 cards
-    ..make-cards(6, team-name + " SERGEANT", "5",
-    [
-      #set text(style: "italic")
-      #fake-bold[Veteran Warrior]
-      
-      #set text(style: "normal")
-      Experienced soldier who leads from the front and commands respect on the battlefield.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Miner, Scout, Spy, Flag
-      
-      #fake-bold[Defeated by:] All higher military ranks, Bomb
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Lieutenant - 6 cards
-    ..make-cards(6, team-name + " LIEUTENANT", "6",
-    [
-      #set text(style: "italic")
-      #fake-bold[Junior Officer]
-      
-      #set text(style: "normal")
-      Skilled officer who balances tactical knowledge with battlefield courage.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Sergeant, Miner, Scout, Spy, Flag
-      
-      #fake-bold[Defeated by:] Higher military ranks, Bomb
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Captain - 6 cards
-    ..make-cards(6, team-name + " CAPTAIN", "7",
-    [
-      #set text(style: "italic")
-      #fake-bold[Company Commander]
-      
-      #set text(style: "normal")
-      Seasoned leader who commands troops with authority and strategic insight.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Lieutenant, Sergeant, Miner, Scout, Spy, Flag
-      
-      #fake-bold[Defeated by:] Senior officers, Bomb
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Major - 5 cards
-    ..make-cards(5, team-name + " MAJOR", "8",
-    [
-      #set text(style: "italic")
-      #fake-bold[Battalion Leader]
-      
-      #set text(style: "normal")
-      High-ranking officer with significant tactical responsibility and battlefield experience.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
-      
-      #fake-bold[Defeated by:] Field Marshal, General, Colonel, Bomb
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Colonel - 3 cards
-    ..make-cards(3, team-name + " COLONEL", "9",
-    [
-      #set text(style: "italic")
-      #fake-bold[Regimental Commander]
-      
-      #set text(style: "normal")
-      Senior officer with extensive command authority and deep strategic understanding.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Major, Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
-      
-      #fake-bold[Defeated by:] Field Marshal, General, Bomb
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // General - 2 cards
-    ..make-cards(2, team-name + " GENERAL", "10",
-    [
-      #set text(style: "italic")
-      #fake-bold[Army Commander]
-      
-      #set text(style: "normal")
-      Elite military leader with supreme tactical knowledge and command over vast forces.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] Colonel, Major, Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
-      
-      #fake-bold[Defeated by:] Field Marshal, Bomb
-    ],
-    border-image: border-image,
-    heading-font: heading-font
-    ),
-
-    // Field Marshal - 1 card
-    ..make-cards(1, team-name + " FIELD MARSHAL", "11",
-    [
-      #set text(style: "italic")
-      #fake-bold[Supreme Commander]
-      
-      #set text(style: "normal")
-      The highest-ranking military officer, commanding respect from all but vulnerable to cunning and explosives.
-      
-      #v(2mm)
-      
-      #fake-bold[Can defeat:] All military ranks, Miner, Scout, Flag
-      
-      #fake-bold[Defeated by:] Spy, Bomb
-      
-      #v(1mm)
-      #set text(size: 7pt, style: "italic")
-      _"Leadership in war is bought with blood and wisdom."_
-    ],
-    border-image: border-image,
-    heading-font: heading-font
+  // Generate cards for each unit type (0-11)
+  for unit-val in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11") {
+    let unit = team-config.units.at(unit-val)
+    let rules = unit-rules.at(unit-val)
+    
+    let unit-cards = make-cards(
+      unit.count, 
+      team-config.team-name + "\n" + unit.name, 
+      unit-val,
+      [
+        #set text(style: "italic")
+        #fake-bold[#unit.flavor]
+        
+        #set text(style: "normal")
+        #if rules.special != none [
+          #fake-bold[Special Rules:] #rules.special
+          
+          #v(2mm)
+        ]
+        
+        #fake-bold[Can defeat:] #format-defeats(rules.defeats, team-key)
+        
+        #fake-bold[Defeated by:] #format-defeats(rules.defeated-by, team-key)
+      ],
+      border-image: team-config.border-image,
+      heading-font: team-config.heading-font
     )
-  )
+    
+    cards = cards + unit-cards
+  }
+  
+  cards
 }
 
+
+
 // Generate cards for both teams
-#card-pages(make-team-cards("GREEK\n", "Diogenes", "greek-border.png"))
+#card-pages(make-team-cards("GREEK"))
 #pagebreak()
-#card-pages(make-team-cards("TROJAN\n", "Cinzel Decorative", "trojan-border.png"))
+#card-pages(make-team-cards("TROJAN"))
