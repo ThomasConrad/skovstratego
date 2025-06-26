@@ -10,6 +10,11 @@
   size: 9pt
 )
 
+// Function to simulate bold text when font doesn't have bold variant
+#let fake-bold(content) = {
+  text(stroke: 0.3pt + black, content)
+}
+
 // A7 card dimensions
 #let card-width = 74mm
 #let card-height = 105mm
@@ -138,17 +143,17 @@
     ..make-cards(1, team-name + " FLAG", "0",
     [
       #set text(style: "italic")
-      *The Sacred Standard*
+      #fake-bold[The Sacred Standard]
       
       #set text(style: "normal")
       The Flag represents your army's honor and cannot engage in combat.
       
       #v(2mm)
       
-      *Special Rules:*
+      #fake-bold[Special Rules:]
       • Cannot challenge other pieces
       • Immune to Bombs
-      • *Victory Condition:* Capture the enemy flag to win!
+      • #fake-bold[Victory Condition:] Capture the enemy flag to win!
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -158,16 +163,16 @@
     ..make-cards(9, team-name + " BOMB", "1",
     [
       #set text(style: "italic")
-      *Explosive Trap*
+      #fake-bold[Explosive Trap]
       
       #set text(style: "normal")
       A hidden mine that destroys most attackers but cannot move to attack.
       
       #v(2mm)
       
-      *Can defeat:* Field Marshal, General, Colonel, Major, Captain, Lieutenant, Sergeant, Scout, Spy
+      #fake-bold[Can defeat:] Field Marshal, General, Colonel, Major, Captain, Lieutenant, Sergeant, Scout, Spy
       
-      *Defeated by:* Miner (only)
+      #fake-bold[Defeated by:] Miner (only)
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -177,16 +182,16 @@
     ..make-cards(1, team-name + " SPY", "2",
     [
       #set text(style: "italic")
-      *Shadow Agent*
+      #fake-bold[Shadow Agent]
       
       #set text(style: "normal")
       A master of stealth who can eliminate the highest-ranking enemy through cunning.
       
       #v(2mm)
       
-      *Can defeat:* Flag, Field Marshal
+      #fake-bold[Can defeat:] Flag, Field Marshal
       
-      *Defeated by:* All other pieces
+      #fake-bold[Defeated by:] All other pieces
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -196,16 +201,16 @@
     ..make-cards(14, team-name + " SCOUT", "3",
     [
       #set text(style: "italic")
-      *Swift Messenger*
+      #fake-bold[Swift Messenger]
       
       #set text(style: "normal")
       Light infantry skilled in reconnaissance and rapid movement across the battlefield.
       
       #v(2mm)
       
-      *Can defeat:* Spy, Flag
+      #fake-bold[Can defeat:] Spy, Flag
       
-      *Defeated by:* All military ranks, Miner, Bomb
+      #fake-bold[Defeated by:] All military ranks, Miner, Bomb
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -215,16 +220,16 @@
     ..make-cards(6, team-name + " MINER", "4",
     [
       #set text(style: "italic")
-      *Siege Engineer*
+      #fake-bold[Siege Engineer]
       
       #set text(style: "normal")
       Specialized warrior trained to disarm explosives and breach fortifications.
       
       #v(2mm)
       
-      *Can defeat:* Scout, Spy, *Bomb*, Flag
+      #fake-bold[Can defeat:] Scout, Spy, #fake-bold[Bomb], Flag
       
-      *Defeated by:* All military ranks
+      #fake-bold[Defeated by:] All military ranks
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -234,16 +239,16 @@
     ..make-cards(6, team-name + " SERGEANT", "5",
     [
       #set text(style: "italic")
-      *Veteran Warrior*
+      #fake-bold[Veteran Warrior]
       
       #set text(style: "normal")
       Experienced soldier who leads from the front and commands respect on the battlefield.
       
       #v(2mm)
       
-      *Can defeat:* Miner, Scout, Spy, Flag
+      #fake-bold[Can defeat:] Miner, Scout, Spy, Flag
       
-      *Defeated by:* All higher military ranks, Bomb
+      #fake-bold[Defeated by:] All higher military ranks, Bomb
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -253,16 +258,16 @@
     ..make-cards(6, team-name + " LIEUTENANT", "6",
     [
       #set text(style: "italic")
-      *Junior Officer*
+      #fake-bold[Junior Officer]
       
       #set text(style: "normal")
       Skilled officer who balances tactical knowledge with battlefield courage.
       
       #v(2mm)
       
-      *Can defeat:* Sergeant, Miner, Scout, Spy, Flag
+      #fake-bold[Can defeat:] Sergeant, Miner, Scout, Spy, Flag
       
-      *Defeated by:* Higher military ranks, Bomb
+      #fake-bold[Defeated by:] Higher military ranks, Bomb
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -272,16 +277,16 @@
     ..make-cards(6, team-name + " CAPTAIN", "7",
     [
       #set text(style: "italic")
-      *Company Commander*
+      #fake-bold[Company Commander]
       
       #set text(style: "normal")
       Seasoned leader who commands troops with authority and strategic insight.
       
       #v(2mm)
       
-      *Can defeat:* Lieutenant, Sergeant, Miner, Scout, Spy, Flag
+      #fake-bold[Can defeat:] Lieutenant, Sergeant, Miner, Scout, Spy, Flag
       
-      *Defeated by:* Senior officers, Bomb
+      #fake-bold[Defeated by:] Senior officers, Bomb
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -291,16 +296,16 @@
     ..make-cards(5, team-name + " MAJOR", "8",
     [
       #set text(style: "italic")
-      *Battalion Leader*
+      #fake-bold[Battalion Leader]
       
       #set text(style: "normal")
       High-ranking officer with significant tactical responsibility and battlefield experience.
       
       #v(2mm)
       
-      *Can defeat:* Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
+      #fake-bold[Can defeat:] Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
       
-      *Defeated by:* Field Marshal, General, Colonel, Bomb
+      #fake-bold[Defeated by:] Field Marshal, General, Colonel, Bomb
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -310,16 +315,16 @@
     ..make-cards(3, team-name + " COLONEL", "9",
     [
       #set text(style: "italic")
-      *Regimental Commander*
+      #fake-bold[Regimental Commander]
       
       #set text(style: "normal")
       Senior officer with extensive command authority and deep strategic understanding.
       
       #v(2mm)
       
-      *Can defeat:* Major, Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
+      #fake-bold[Can defeat:] Major, Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
       
-      *Defeated by:* Field Marshal, General, Bomb
+      #fake-bold[Defeated by:] Field Marshal, General, Bomb
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -329,16 +334,16 @@
     ..make-cards(2, team-name + " GENERAL", "10",
     [
       #set text(style: "italic")
-      *Army Commander*
+      #fake-bold[Army Commander]
       
       #set text(style: "normal")
       Elite military leader with supreme tactical knowledge and command over vast forces.
       
       #v(2mm)
       
-      *Can defeat:* Colonel, Major, Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
+      #fake-bold[Can defeat:] Colonel, Major, Captain, Lieutenant, Sergeant, Miner, Scout, Spy, Flag
       
-      *Defeated by:* Field Marshal, Bomb
+      #fake-bold[Defeated by:] Field Marshal, Bomb
     ],
     border-image: border-image,
     heading-font: heading-font
@@ -348,16 +353,16 @@
     ..make-cards(1, team-name + " FIELD MARSHAL", "11",
     [
       #set text(style: "italic")
-      *Supreme Commander*
+      #fake-bold[Supreme Commander]
       
       #set text(style: "normal")
       The highest-ranking military officer, commanding respect from all but vulnerable to cunning and explosives.
       
       #v(2mm)
       
-      *Can defeat:* All military ranks, Miner, Scout, Flag
+      #fake-bold[Can defeat:] All military ranks, Miner, Scout, Flag
       
-      *Defeated by:* Spy, Bomb
+      #fake-bold[Defeated by:] Spy, Bomb
       
       #v(1mm)
       #set text(size: 7pt, style: "italic")
