@@ -38,8 +38,8 @@
       "5": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
       "6": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
       "7": (name: "ADMIRAL", flavor: "Fleet Commander", count: 6),
-      "8": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 3),
-      "9": (name: "KING", flavor: "Ruler of Men", count: 5),
+      "8": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 5),
+      "9": (name: "KING", flavor: "Ruler of Men", count: 3),
       "10": (name: "DEMIGOD", flavor: "Bearer of Immortal Blood", count: 2),
       "11": (name: "ATHENA", flavor: "Goddess of Wisdom", count: 1),
     )
@@ -58,8 +58,8 @@
       "5": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
       "6": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
       "7": (name: "ADMIRAL", flavor: "Fleet Commander", count: 6),
-      "8": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 3),
-      "9": (name: "KING", flavor: "Ruler of Men", count: 5),
+      "8": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 5),
+      "9": (name: "KING", flavor: "Ruler of Men", count: 3),
       "10": (name: "DEMIGOD", flavor: "Bearer of Immortal Blood", count: 2),
       "11": (name: "APOLLO", flavor: "God of Light", count: 1),
     )
