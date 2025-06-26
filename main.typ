@@ -38,8 +38,8 @@
       "5": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
       "6": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
       "7": (name: "ADMIRAL", flavor: "Fleet Commander", count: 6),
-      "8": (name: "HERO", flavor: "Legendary Warrior", count: 5),
-      "9": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 3),
+      "8": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 3),
+      "9": (name: "KING", flavor: "Ruler of Men", count: 5),
       "10": (name: "DEMIGOD", flavor: "Bearer of Immortal Blood", count: 2),
       "11": (name: "ATHENA", flavor: "Goddess of Wisdom", count: 1),
     )
@@ -58,8 +58,8 @@
       "5": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
       "6": (name: "CAPTAIN", flavor: "Ship Commander", count: 6),
       "7": (name: "ADMIRAL", flavor: "Fleet Commander", count: 6),
-      "8": (name: "HERO", flavor: "Legendary Warrior", count: 5),
-      "9": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 3),
+      "8": (name: "CHAMPION", flavor: "Favoured by the Gods", count: 3),
+      "9": (name: "KING", flavor: "Ruler of Men", count: 5),
       "10": (name: "DEMIGOD", flavor: "Bearer of Immortal Blood", count: 2),
       "11": (name: "APOLLO", flavor: "God of Light", count: 1),
     )
@@ -111,17 +111,17 @@
   "8": (
     special: none, // No special rules - just standard attacking
     defeats: ("7", "6", "5", "4", "3", "2", "0"),
-    defeated-by: ("11", "10", "9", "1") // Colonel, general, field marshal, bomb
+    defeated-by: ("11", "10", "9", "1") // King, demigod, god, bomb
   ),
   "9": (
     special: none, // No special rules - just standard attacking
     defeats: ("8", "7", "6", "5", "4", "3", "2", "0"),
-    defeated-by: ("11", "10", "1") // General, field marshal, bomb
+    defeated-by: ("11", "10", "1") // Demigod, god, bomb
   ),
   "10": (
     special: none, // No special rules - just standard attacking
     defeats: ("9", "8", "7", "6", "5", "4", "3", "2", "0"),
-    defeated-by: ("11", "2", "1") // Field marshal, spy, bomb
+    defeated-by: ("11", "2", "1") // God, spy, bomb
   ),
   "11": (
     special: "Vulnerable to Spy.",
