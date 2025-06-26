@@ -32,7 +32,7 @@
     units: (
       "0": (name: "GOLDEN FLEECE", flavor: "Sacred Treasure", count: 1),
       "1": (name: "SIREN'S SONG", flavor: "Deadly Trap", count: 9),
-      "2": (name: "ODYSSEUS", flavor: "Master of Disguise", count: 1),
+      "2": (name: "ODYSSEUS", flavor: "Cunning Hero", count: 1),
       "3": (name: "MESSENGER", flavor: "Swift Scout", count: 14),
       "4": (name: "SAILOR", flavor: "Crew Member", count: 6),
       "5": (name: "NAVIGATOR", flavor: "Ship Officer", count: 6),
