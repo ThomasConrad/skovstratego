@@ -74,7 +74,7 @@
     defeated-by: ("11", "10", "9", "8", "7", "6", "5", "4", "3", "2") // Defeated by all except bomb
   ),
   "1": (
-    special: "Cannot attack or move. Destroys attackers.",
+    special: "dynamic", // Will be set dynamically to reference actual unit name
     defeats: ("11", "10", "9", "8", "7", "6", "5", "3", "2"), // All except miner and flag
     defeated-by: ("4",) // Only miner
   ),
@@ -309,6 +309,10 @@
       let opposite-team-key = get-opposite-team(team-key)
       let opposite-config = unit-configs.at(opposite-team-key)
       "Only piece that can defeat " + capitalize(opposite-config.units.at("1").name) + "."
+    } else if unit-val == "1" {
+      // Bombs destroy attackers except for the miner
+      let current-config = unit-configs.at(team-key)
+      "Cannot attack. Destroys attackers, except " + capitalize(current-config.units.at("4").name) + "."
     } else {
       rules.special
     }
