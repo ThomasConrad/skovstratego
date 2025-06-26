@@ -89,7 +89,7 @@
     defeated-by: ("11", "10", "9", "8", "7", "6", "5", "4", "1") // All military ranks, miner, bomb
   ),
   "4": (
-    special: "Only piece that can defeat Bombs.",
+    special: "dynamic", // Will be set dynamically to reference actual bomb name
     defeats: ("3", "2", "1", "0"),
     defeated-by: ("11", "10", "9", "8", "7", "6", "5") // All military ranks
   ),
@@ -304,6 +304,11 @@
       let opposite-team-key = get-opposite-team(team-key)
       let opposite-config = unit-configs.at(opposite-team-key)
       "Can defeat " + capitalize(opposite-config.units.at("11").name) + "."
+    } else if unit-val == "4" {
+      // Miner can defeat bombs - reference actual bomb name
+      let opposite-team-key = get-opposite-team(team-key)
+      let opposite-config = unit-configs.at(opposite-team-key)
+      "Only piece that can defeat " + capitalize(opposite-config.units.at("1").name) + "."
     } else {
       rules.special
     }
