@@ -135,8 +135,7 @@
 // TOTAL: 60 cards
 
 // Function to generate all cards for a team
-#let make-team-cards(team-name, heading-font) = {
-  let border-image = if team-name == "GREEK" { "greek-border.png" } else { "trojan-border.png" }
+#let make-team-cards(team-name, heading-font, border-image) = {
   
   (
     // Flag - 1 card
@@ -375,6 +374,6 @@
 }
 
 // Generate cards for both teams
-#card-pages(make-team-cards("GREEK\n", "Diogenes"))
+#card-pages(make-team-cards("GREEK\n", "Diogenes", "greek-border.png"))
 #pagebreak()
-#card-pages(make-team-cards("TROJAN\n", "Cinzel Decorative"))
+#card-pages(make-team-cards("TROJAN\n", "Cinzel Decorative", "trojan-border.png"))
